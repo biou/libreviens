@@ -20,9 +20,6 @@
 #
 # ***** END LICENSE BLOCK *****
 
-// path to the resources directory
-define("RESOURCES_PATH", dirname(__FILE__).'/../../rest/resources/');
-
 /**
  * RESTC Rest Controller
  * @package REST
