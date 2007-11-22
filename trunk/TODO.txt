@@ -1,0 +1,6 @@
+- securiser les variables get et les paramètres de l'url, et les variables en post si form-urlencoded
+- intégration dans front controller framework sur base du préfixe
+- gérer les TODO et les FIXME
+
+- cache (p.244)
+- doc
