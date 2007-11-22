@@ -36,6 +36,11 @@ class ServiceEnumerator
 	public static function listDefinedResources() {
 		$resources = array();
 		if (self::$listResources === null) {
+			// verify if RESOURCES_PATH is defined
+			if (!defined('RESOURCES_PATH')) {
+				throw new Exception('RESOURCES_PATH is not defined');
+			}
+			
 			$dir = new DirectoryIterator(RESOURCES_PATH);
 			foreach ($dir as $file) {
 				$filename = $file->getFileName();
