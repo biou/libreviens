@@ -41,7 +41,7 @@ class DefaultRootResource implements RESTRootResource {
  	 * Constructor
  	 * @param	HttpRequest		$pReq			request
  	 */
-    public function __construct(HttpRequest $pReq) {
+    public function __construct(RESTHttpRequest $pReq) {
     	$this->request = $pReq;
     }
     

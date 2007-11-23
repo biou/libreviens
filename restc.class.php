@@ -55,7 +55,7 @@ class RESTC
  	 * @param	HttpRequest		$pRootResource	root resource
  	 * @param	HttpRequest		$pRealm		name of the application
  	 */
-	public function __construct(HttpRequest $pReq, $pRootResource, $pRealm) {
+	public function __construct(RESTHttpRequest $pReq, $pRootResource, $pRealm) {
 		$this->request = $pReq;
 		// we compute the list of resources classes
 		$this->listResources = ServiceEnumerator::listDefinedResources();

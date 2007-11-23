@@ -2,8 +2,8 @@
 	require_once dirname(__FILE__) ."/../includes/common.php";
 	$app_name = 'test web service';
 	try {
-		$re		= new HttpRequest();
-		$root		= new DefaultRootResource($re);
+		$re		= new RESTHttpRequest();
+		$root	= new DefaultRootResource($re);
 		$fc		= new RESTC($re, $root, $app_name);
 		$fc->dispatch();
 	} catch (RESTException $e) {

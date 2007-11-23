@@ -63,7 +63,7 @@ class RESTException extends Exception
 	public function sendError() {
 		$message	= $this->getMessage();
 		$code		= $this->getStatusCode();
-		header("HTTP/1.0 ".httpStatus::getMessage($code));
+		header("HTTP/1.0 ".HttpStatus::getMessage($code));
 		foreach ($this->getAdditionalHeaders() as $k => $v) {
 			header($k.': '.$v, false);
 		}

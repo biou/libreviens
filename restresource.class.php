@@ -25,14 +25,14 @@
  * @package REST
  * @author Luc Dehand - Alain Vagner
  */
-interface restresource {
+interface RESTResource {
  	/**
  	 * Constructor
  	 * @param	HttpRequest		$pReq			request
  	 * @param	string			$pExt			extension
  	 * @param	array			$pConstraints	list of constraints on this resource
  	 */
-	public function __construct(HttpRequest $pReq, $pExt = null, $pConstraints = array());
+	public function __construct(RESTHttpRequest $pReq, $pExt = null, $pConstraints = array());
 
  	/**
  	 * authentication

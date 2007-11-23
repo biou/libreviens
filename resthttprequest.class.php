@@ -25,7 +25,7 @@
  * @package REST
  * @author Luc Dehand - Alain Vagner
  */
-class HttpRequest {
+class RESTHttpRequest {
 
  	/**
  	 * data passed to the REST web service
@@ -62,7 +62,7 @@ class HttpRequest {
  	 * @param	string		$pPathInfo	overrides server path_info (optional)
  	 */
 	function __construct($pPathInfo = null) {
-	    	$this->input = file_get_contents('php://input');
+	    $this->input = file_get_contents('php://input');
 		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
 		$headers = apache_request_headers();
 		$this->content_type = (isset($headers['Content-Type']))?$headers['Content-Type']:'';
