@@ -1,8 +1,6 @@
 <?php
 /**
  * sample resource class
- * @package REST
- * @author Luc Dehand - Alain Vagner - Laurent Haan
  */
 class Test1 implements RESTResource {
 
