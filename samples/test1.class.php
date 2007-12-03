@@ -30,10 +30,11 @@ class Test1 implements RESTResource {
  	 * @param	string			$pExt			extension
  	 * @param	array			$pConstraints	list of constraints on this resource
  	 */
-    public function __construct(HttpRequest $pReq, $pExt = null, $pConstraints = array()) {
+    public function __construct(RESTHttpRequest $pReq, $pExt = null, $pConstraints = array()) {
     	$this->myList = array("1", "2", "3");
     	$this->constraints = $pConstraints;
     	$this->request = $pReq;
+    	$this->ext = $pExt;    	
     }
     
  	/**
