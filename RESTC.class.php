@@ -368,7 +368,7 @@ class RESTC
 		}
 		if ($p = strrpos($pE, '.')) {
 			// handling of the extension
-			$ext = substr($pE, $p, strlen($pE));
+			$ext = substr($pE, $p+1, strlen($pE));
 			$result['ext'] = $ext;
 			$elem = substr($pE, 0, $p);
 			$result['elem'] = $elem;
