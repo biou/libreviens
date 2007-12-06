@@ -90,7 +90,6 @@ class RESTHttpRequest {
 			$this->login = '';
 			$this->password = '';
 		}
-		// TODO sécuriser path, GET et si possible POST (quand input n'est pas du xml)
 		if ($pPathInfo != null) {
 			$this->path = $pPathInfo;
 		} else {
@@ -99,7 +98,34 @@ class RESTHttpRequest {
 			} else {
 				$this->path = '';
 			}
-		}	
+		}
+		// delete query string
+		if (strpos($this->path, '?')) {
+			$tmp = explode('?',$this->path);
+			$this->path = $tmp[0];
+		}
+		
+		// secure path
+		$unsecure_path = explode('/', $this->path);
+		$secure_path = array();
+		foreach ($unsecure_path as $i) {
+			$secure_path[] = trim(stripslashes(htmlentities($i)));
+		}
+		$this->path = implode('/', $secure_path);
+		
+		// secure GET, POST
+		foreach ($_GET as $k => $v) {
+			unset($_GET[$k]);
+			$k = trim(stripslashes(htmlentities($k)));
+			$v = trim(stripslashes(htmlentities($v)));
+			$_GET[$k] = $v;
+		}
+		foreach ($_POST as $k => $v) {
+			unset($_POST[$k]);
+			$k = trim(stripslashes(htmlentities($k)));
+			$v = trim(stripslashes(htmlentities($v)));
+			$_POST[$k] = $v;			
+		}
 	}
 
  	/**
