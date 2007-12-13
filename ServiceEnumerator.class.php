@@ -35,8 +35,8 @@ class ServiceEnumerator
  	 */	
 	public static function listDefinedResources() {
 		
+		$prefix = null;
 		if (defined('RESOURCES_NS')) {		
-			$prefix = null;
 			if ((strlen(RESOURCES_NS)>= 2) && (substr(RESOURCES_NS, -2, 2) != '::')) {
 				$pos = strpos(RESOURCES_NS, '::');
 				if ($pos !== false) {
@@ -59,7 +59,7 @@ class ServiceEnumerator
 				$filename = $file->getFileName();
 				$matches = array();
 				$regex = '';
-				if ($prefix) {
+				if ($prefix !== null) {
 					$regex = '/'.$prefix.'(.*)\.class\.php$/';
 				} else {
 					$regex = '/(.*)\.class\.php$/';
