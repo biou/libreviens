@@ -134,6 +134,9 @@ class RESTC
 			$id = (isset($the_last[1]))?$the_last[1]:'';
 			
 			// we instanciate the resource class
+			if (defined('RESOURCES_NS')) {	
+				$res_name = RESOURCES_NS.$res_name;
+			}
 			$resource = new $res_name($this->request, $ext, $res);
 
 			// true if the client is authenticated

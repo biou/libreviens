@@ -34,6 +34,19 @@ class ServiceEnumerator
  	 * @return	array				list of resources
  	 */	
 	public static function listDefinedResources() {
+		
+		if (defined('RESOURCES_NS')) {		
+			$prefix = null;
+			if ((strlen(RESOURCES_NS)>= 2) && (substr(RESOURCES_NS, -2, 2) != '::')) {
+				$pos = strpos(RESOURCES_NS, '::');
+				if ($pos !== false) {
+					$prefix = substr(RESOURCES_NS, $pos+2, strlen(RESOURCES_NS)-1);
+				} else {
+					$prefix = RESOURCES_NS;
+				}
+			}
+		}
+		
 		$resources = array();
 		if (self::$listResources === null) {
 			// verify if RESOURCES_PATH is defined
@@ -45,7 +58,13 @@ class ServiceEnumerator
 			foreach ($dir as $file) {
 				$filename = $file->getFileName();
 				$matches = array();
-				$res = preg_match('/(.*)\.class\.php$/', $filename, &$matches);
+				$regex = '';
+				if ($prefix) {
+					$regex = '/'.$prefix.'(.*)\.class\.php$/';
+				} else {
+					$regex = '/(.*)\.class\.php$/';
+				}
+				$res = preg_match($regex, $filename, &$matches);
 				if (isset($matches[1])) {
 					$resources[] = $matches[1];
 				}
