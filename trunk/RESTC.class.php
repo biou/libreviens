@@ -118,8 +118,21 @@ class RESTC
 				$path = substr($path, 0, strlen($path)-1);
 			}
 			// tabPath is an array of "path variables"
-			$tabPath = explode('/', $path);
+			$limit = strpos($path,"http:");
+			if ($limit===false){
+				$path_ = $path;
+			}
+			else {
+				$path_ = substr($path,0,$limit-1);
+			}
 			
+			$tabPath = explode('/', $path_);
+			
+			if($limit!==false) {
+				$newinst = substr($path,$limit,strlen($path));
+				$tabPath[] = $newinst;
+			}
+	
 			// call to the URL analysis
 			$new = false;
 			$edit = false;
