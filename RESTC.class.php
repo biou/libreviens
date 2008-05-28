@@ -118,6 +118,7 @@ class RESTC
 				$path = substr($path, 0, strlen($path)-1);
 			}
 			// tabPath is an array of "path variables"
+			// semantic web id handling (uri inside an uri)
 			$limit = strpos($path,"http:");
 			if ($limit===false){
 				$path_ = $path;
@@ -130,7 +131,18 @@ class RESTC
 			
 			if($limit!==false) {
 				$newinst = substr($path,$limit,strlen($path));
-				$tabPath[] = $newinst;
+				$pos1 = strrpos($newinst,"/");
+				$newinst1 =  substr($newinst,$pos1+1,strlen($newinst));
+				// if the last path variable does not contain a #, it is not a semweb id, so we can assume it is a classical path variable 
+				// associated with a resource class 
+				// FIXME: find a more generic solution
+				if(strpos($newinst1,"#")===false){
+					$tabPath[] = substr($newinst,0,$pos1);
+					$tabPath[] = $newinst1;
+				}
+				else{
+					$tabPath[] = $newinst;
+				}
 			}
 	
 			// call to the URL analysis
@@ -385,9 +397,14 @@ class RESTC
 		if ($p = strrpos($pE, '.')) {
 			// handling of the extension
 			$ext = substr($pE, $p+1, strlen($pE));
-			$result['ext'] = $ext;
-			$elem = substr($pE, 0, $p);
-			$result['elem'] = $elem;
+			// we test if the extension has a "normal" size
+			if (strlen($ext) < 5) {
+				$result['ext'] = $ext;
+				$elem = substr($pE, 0, $p);
+				$result['elem'] = $elem;
+			} else {
+				$result['elem'] = $pE;
+			}
 		} else {
 			$result['elem'] = $pE;
 		}
