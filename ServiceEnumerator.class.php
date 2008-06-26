@@ -64,7 +64,7 @@ class ServiceEnumerator
 				} else {
 					$regex = '/(.*)\.class\.php$/';
 				}
-				$res = preg_match($regex, $filename, &$matches);
+				$res = preg_match($regex, $filename, $matches);
 				if (isset($matches[1])) {
 					$resources[] = $matches[1];
 				}
