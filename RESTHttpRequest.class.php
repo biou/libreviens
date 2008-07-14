@@ -66,8 +66,26 @@ class RESTHttpRequest {
 		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
 		$headers = apache_request_headers();
 		$this->content_type = (isset($headers['Content-Type']))?$headers['Content-Type']:'';
-		// http basic auth handling
-		if (isset($headers['Authorization'])) {
+		// auth handling
+		if (isset($_GET['auth'])) {
+			// http auth emulation on get for bad clients
+			// die IE, die ! :)			
+			$str = base64_decode($_GET['auth'], true);
+			if ($str !== false) {
+				$credentials = explode(':', $str);
+				if (count($credentials) == 2) {
+					$this->login = $credentials[0];
+					$this->password = $credentials[1];
+				} else {
+					throw new RESTException('Invalid Authorization token', 409);
+				}
+			} else {
+				throw new RESTException('Invalid Authorization token', 409);
+			}
+			unset($_GET['auth']);
+		} else if (isset($headers['Authorization'])) {
+			// http basic auth handling
+			
 			$matches = array();
 			preg_match('/^Basic (.+)/', $headers['Authorization'], $matches);
 			if (isset($matches[1])) {
