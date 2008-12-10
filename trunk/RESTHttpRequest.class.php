@@ -67,7 +67,28 @@ class RESTHttpRequest {
 		$headers = apache_request_headers();
 		$this->content_type = (isset($headers['Content-Type']))?$headers['Content-Type']:'';
 		// auth handling
-		if (isset($_GET['auth'])) {
+		if (function_exists('_rest_custom_auth')) {
+			// custom auth function
+			// If a custom auth is necessary, it is possible to define this kind of function
+			// before this library is included.
+			// It must have in parameter an associative array containing references on 3 variables :
+			// authd: authentication succeeded ? 0 = false, 1 = true
+			// login: the login of the user
+			// pass: the pass of the user
+			// These variables are used to return results.
+			$authd = 0;
+			$login = '';
+			$pass = '';
+			$result = array('authd' => &$authd, 'login' => &$login, 'pass' => &$pass);
+			call_user_func('_rest_custom_auth', $result);
+			if ($authd !== 0) {
+				$this->login = $login;
+				$this->password = $pass;				
+			} else {
+				throw new RESTException('Invalid Authorization token', 409);
+			}
+			
+		} else if (isset($_GET['auth'])) {
 			// http auth emulation on get for bad clients
 			// die IE, die ! :)			
 			$str = base64_decode($_GET['auth'], true);
