@@ -67,27 +67,26 @@ class RESTHttpRequest {
 		$headers = apache_request_headers();
 		$this->content_type = (isset($headers['Content-Type']))?$headers['Content-Type']:'';
 		// auth handling
+		$authd = -1;
 		if (function_exists('_rest_custom_auth')) {
 			// custom auth function
 			// If a custom auth is necessary, it is possible to define this kind of function
 			// before this library is included.
 			// It must have in parameter an associative array containing references on 3 variables :
-			// authd: authentication succeeded ? 0 = false, 1 = true
+			// authd: authentication succeeded ? 0 = false, 1 = true, -1 not applicable
 			// login: the login of the user
 			// pass: the pass of the user
 			// These variables are used to return results.
-			$authd = 0;
 			$login = '';
 			$pass = '';
 			$result = array('authd' => &$authd, 'login' => &$login, 'pass' => &$pass);
 			call_user_func('_rest_custom_auth', $result);
-			if ($authd !== 0) {
-				$this->login = $login;
-				$this->password = $pass;				
-			} else {
-				throw new RESTException('Invalid Authorization token', 409);
-			}
-			
+		}
+		if ($authd === 1) {
+			$this->login = $login;
+			$this->password = $pass;				
+		} else if ($authd === 0) {
+			throw new RESTException('Invalid Authorization token', 409);
 		} else if (isset($_GET['auth'])) {
 			// http auth emulation on get for bad clients
 			// die IE, die ! :)			
@@ -95,8 +94,8 @@ class RESTHttpRequest {
 			if ($str !== false) {
 				$credentials = explode(':', $str);
 				if (count($credentials) == 2) {
-					$this->login = $credentials[0];
-					$this->password = $credentials[1];
+					$this->login = trim($credentials[0]);
+					$this->password = trim($credentials[1]);
 				} else {
 					throw new RESTException('Invalid Authorization token', 409);
 				}
@@ -106,7 +105,7 @@ class RESTHttpRequest {
 			unset($_GET['auth']);
 		} else if (isset($headers['Authorization'])) {
 			// http basic auth handling
-			
+					
 			$matches = array();
 			preg_match('/^Basic (.+)/', $headers['Authorization'], $matches);
 			if (isset($matches[1])) {
