@@ -66,7 +66,7 @@ class RESTHttpRequest {
 		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
 		
                 if(!function_exists('apache_request_headers')) {
-                    // defines apache_request_headers function for IIS
+                    // defines apache_request_headers function for IIS.
                     function apache_request_headers() {
                         $headers = array();
                         foreach($_SERVER as $key => $value) {
