@@ -64,7 +64,21 @@ class RESTHttpRequest {
 	function __construct($pPathInfo = null) {
 	    $this->input = file_get_contents('php://input');
 		$this->method = strtoupper($_SERVER['REQUEST_METHOD']);
-		$headers = apache_request_headers();
+		
+                if(!function_exists('apache_request_headers')) {
+                    // defines apache_request_headers function for IIS
+                    function apache_request_headers() {
+                        $headers = array();
+                        foreach($_SERVER as $key => $value) {
+                            if(substr($key, 0, 5) == 'HTTP_') {
+                                $headers[str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))))] = $value;
+                            }
+                        }
+                    return $headers;
+                    }
+                }
+                $headers = apache_request_headers();
+
 		$this->content_type = (isset($headers['Content-Type']))?$headers['Content-Type']:'';
 		// auth handling
 		$authd = -1;
