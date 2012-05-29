@@ -80,7 +80,7 @@ class RESTHttpRequest {
 			$login = '';
 			$pass = '';
 			$result = array('authd' => &$authd, 'login' => &$login, 'pass' => &$pass);
-			call_user_func('_rest_custom_auth', $result);
+			call_user_func('_rest_custom_auth', array(&$result));
 		}
 		if ($authd === 1) {
 			$this->login = $login;
